@@ -5,7 +5,6 @@
 #Definição e interfaces 
 internet=ens3
 local=ens4
-
 ipLocal=192.168.1.0/24
 
 # Politica padrao
@@ -25,11 +24,11 @@ iptables -A INPUT -s 172.16.0.0/16 -i $internet -j DROP
 iptables -A INPUT -s 192.168.0.0/16 -i $internet -j DROP
 
 #Compartilhamento de internet
-iptables -A POSTROUTING -s $ipLocal -d 224.0.0.0/24 -j RETURN
-iptables -A POSTROUTING -s $ipLocal -d 255.255.255.255/32 -j RETURN
-iptables -A POSTROUTING -s $ipLocal ! -d $ipLocal -p tcp -j MASQUERADE --to-ports 1024-65535
-iptables -A POSTROUTING -s $ipLocal ! -d $ipLocal -p udp -j MASQUERADE --to-ports 1024-65535
-iptables -A POSTROUTING -s $ipLocal ! -d $ipLocal -j MASQUERADE
+iptables -t nat -A POSTROUTING -s $ipLocal -o $internet -d 224.0.0.0/24 -j RETURN
+iptables -t nat -A POSTROUTING -s $ipLocal -o $internet -d 255.255.255.255/32 -j RETURN
+iptables -t nat -A POSTROUTING -s $ipLocal ! -d $ipLocal -o $internet -p tcp -j MASQUERADE --to-ports 1024-65535
+iptables -t nat -A POSTROUTING -s $ipLocal ! -d $ipLocal -o $internet -p udp -j MASQUERADE --to-ports 1024-65535
+iptables -t nat -A POSTROUTING -s $ipLocal ! -d $ipLocal -o $internet -j MASQUERADE
 
 #PROXY
 #iptables -A PREROUTING -s $ipLocal ! -d $ipLocal -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 3129
