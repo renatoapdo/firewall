@@ -3,7 +3,7 @@
 # Contato: renato@renatobueno.eti.br
 
 #Definição e interfaces 
-internet= ens3
+internet=ens3
 local=ens4
 
 ipLocal=192.168.1.0/24
@@ -20,9 +20,9 @@ iptables -A FORWARD -p tcp --syn -m limit --limit 1/s -j ACCEPT
 iptables -A FORWARD -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j ACCEPT
 
 # Proteção contra IP Bogons
-iptables -A INPUT -s 10.0.0.0/8 -i ppp0 -j DROP
-iptables -A INPUT -s 172.16.0.0/16 -i ppp0 -j DROP
-iptables -A INPUT -s 192.168.0.0/24 -i ppp0 -j DROP
+iptables -A INPUT -s 10.0.0.0/8 -i $internet -j DROP
+iptables -A INPUT -s 172.16.0.0/16 -i $internet -j DROP
+iptables -A INPUT -s 192.168.0.0/16 -i $internet -j DROP
 
 #Compartilhamento de internet
 iptables -A POSTROUTING -s $ipLocal -d 224.0.0.0/24 -j RETURN
