@@ -3,7 +3,7 @@
 # Contato: renato@renatobueno.eti.br
 
 #Definição e interfaces 
-internet=ienp1s0
+internet=enp1s0
 local=enp2s0
 ipLocal=192.168.10.0/24
 
